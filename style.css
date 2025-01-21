@@ -8,6 +8,7 @@
     margin: auto;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 #Timer {
@@ -46,19 +47,20 @@
     width: 80%;
     margin: auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 #Board {
     height: 450px;
     width: 450px;
     background-color: black;
+    margin-right: 30px;
 }
 
 #SudokuTool {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 #SudokuHelper .i {
