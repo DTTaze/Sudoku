@@ -1,8 +1,3 @@
-#header {
-    border-bottom: solid 1px black;
-    margin-bottom: 10px;
-}
-
 #container {
     width: 80%;
     margin: auto;
@@ -12,6 +7,7 @@
     width: 80%;
     margin: auto;
     display: flex;
+    justify-content: space-between;
 }
 
 #Timer {
@@ -44,4 +40,86 @@
     border-radius: 2px;
     cursor: pointer;
     background-color: rgb(171, 169, 169);
+}
+
+#SudokuGame {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+#Board {
+    height: 450px;
+    width: 450px;
+    background-color: black;
+}
+
+#SudokuTool {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#SudokuHelper .i {
+    text-align: 10px;
+}
+
+#SudokuHelper {
+    display: flex;
+    justify-content: space-between;
+}
+
+#SudokuHelper .fa-solid {
+    font-size: 30px;
+    padding: 10px;
+    border-radius: 30px;
+    background-color:#eaeef4 ;
+    margin-bottom: 10px;
+}
+
+#SudokuHelper .fa-solid:hover {
+    cursor: pointer;
+    background-color: #c4c7cc;
+}
+
+#NumberTable {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.NumberValue {
+    width: 50px;
+    height: 50px;
+    background-color: #eaeef4;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+}
+
+.NumberValue:hover {
+    background-color: #c4c7cc;
+    cursor: pointer;
+}
+
+#NewGame {
+    background-color: #5a7bc0;
+    width: 220px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 100;
+    font-weight: bold;
+    font-size: larger;
+    color:aliceblue;
+    border-radius: 7px;
+}
+
+#NewGame:hover {
+    background-color: #6c93e9;
+    cursor: pointer;
 }
