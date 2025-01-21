@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sudoku.com</title>
         <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
         <script src="https://kit.fontawesome.com/8f67e6cb9e.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -24,8 +25,10 @@
                 <div class="status-element" id="HardMode"><p>Khó</p></div>
                 <div class="status-element" id="Error"><p>Lỗi: </p></div>
                 <div class="status-element" id="NumberError"><p>0/3</p></div>
-                <div class="status-element" id="Time"><p>00:00</p></div>
-                <div class="status-element" id="PauseIcon"><i class="fa-solid fa-pause"></i></div>
+                <div class="status-element" id="Timer">
+                    <p>00:00</p>
+                </div>
+                <div class="status-element" id="PauseIcon" onclick="pause()"><i class="fa-solid fa-pause"></i></div>
             </div>
         </div>
         </div>
