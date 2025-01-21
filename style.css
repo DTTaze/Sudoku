@@ -1,0 +1,43 @@
+#header {
+    border-bottom: solid 1px black;
+    margin-bottom: 10px;
+}
+
+#container {
+    width: 80%;
+    margin: auto;
+}
+
+.Status {
+    width: 80%;
+    margin: auto;
+    display: flex;
+}
+
+.status-element {
+    padding-left: 10px;
+    padding-right: 10px;
+} 
+
+#PauseIcon {
+    margin: 16px;
+    cursor: pointer;
+}
+
+#EasyMode:hover {
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: rgb(171, 169, 169);
+}
+
+#MediumMode:hover {
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: rgb(171, 169, 169);
+}
+
+#HardMode:hover {
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: rgb(171, 169, 169);
+}
