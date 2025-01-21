@@ -2,6 +2,8 @@ var timer;
 var sec = 0; 
 var isPaused = false; 
 var element = document.getElementById('Timer');
+var button = document.getElementById('PauseIcon');
+var icon = button.querySelector('i');
 
 function startTimer() {
     timer = setInterval(() => {
@@ -12,13 +14,16 @@ function startTimer() {
     }, 1000);
 }
 
-
 function pause() {
     if (isPaused) {
         startTimer();
+        icon.classList.remove('fa-play');
+        icon.classList.add('fa-pause');
         isPaused = false;
     } else {
         clearInterval(timer);
+        icon.classList.remove('fa-pause');
+        icon.classList.add('fa-play');
         isPaused = true;
     }
 }
