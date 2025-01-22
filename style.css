@@ -51,10 +51,14 @@
 }
 
 #Board {
+    border-collapse: collapse;
+    display: flex;
     height: 450px;
     width: 450px;
     background-color: black;
     margin-right: 30px;
+    justify-content: center;
+    align-items: center;
 }
 
 #SudokuTool {
@@ -124,4 +128,31 @@
 #NewGame:hover {
     background-color: #6c93e9;
     cursor: pointer;
+}
+
+
+.thick-border-left {
+    border-left: 3px solid #000;
+}
+
+.thick-border-right {
+    border-right: 3px solid #000;
+}
+
+.thick-border-top {
+    border-top: 3px solid #000;
+}
+
+.thick-border-bottom {
+    border-bottom: 3px solid #000;
+}
+
+td {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #000;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
 }
