@@ -25,23 +25,12 @@
     cursor: pointer;
 }
 
-#EasyMode:hover {
+#EasyMode:hover, #MediumMode:hover, #HardMode:hover {
     border-radius: 2px;
     cursor: pointer;
     background-color: rgb(171, 169, 169);
 }
 
-#MediumMode:hover {
-    border-radius: 2px;
-    cursor: pointer;
-    background-color: rgb(171, 169, 169);
-}
-
-#HardMode:hover {
-    border-radius: 2px;
-    cursor: pointer;
-    background-color: rgb(171, 169, 169);
-}
 
 #SudokuGame {
     width: 80%;

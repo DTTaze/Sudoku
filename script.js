@@ -5,6 +5,7 @@ var element = document.getElementById('Timer');
 var button = document.getElementById('PauseIcon');
 var icon = button.querySelector('i');
 var board = Array.from({length : 9}, () => Array(9).fill(0) )
+var difficultMode = 1;
 
 function startTimer() {
     timer = setInterval(() => {
@@ -30,24 +31,24 @@ function pause() {
 }
 
 function isSafe(board, row, col, num) {
-    for(var i = 0; i<9; i++) {
-        if(board[row][i] === num) return false
+    for (var i = 0; i < 9; i++) {
+        if (board[row][i] === num) return false;
     }
 
-    for(var i = 0; i<9; i++) {
-        if(board[i][col] === num) return false
+    for (var i = 0; i < 9; i++) {
+        if (board[i][col] === num) return false;
     }
 
-    startRow = Math.floor(row/3) * 3
-    startCol = Math.floor(col/3) * 3
+    const startRow = Math.floor(row / 3) * 3;
+    const startCol = Math.floor(col / 3) * 3;
 
-    for(var i = 0; i<3; i++) {
-        for(var j = 0; j<3; j++) {
-            if(board[startRow+i][startCol+j] === num) return false
+    for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+            if (board[startRow + i][startCol + j] === num) return false;
         }
     }
 
-    return true
+    return true;
 }
 
 function shuffle(array) {
@@ -57,7 +58,6 @@ function shuffle(array) {
     }
     return array;
 }
-
 
 function createSudokuBoard(board) {
     for (let i = 0; i < 9; i++) {
@@ -80,18 +80,76 @@ function createSudokuBoard(board) {
     return true;
 }
 
-createSudokuBoard(board)
-const tableCells = document.querySelectorAll("#Board table td");
-let index = 0; 
-for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-        const cellValue = board[row][col];
-        if (cellValue !== 0) {
-            tableCells[index].textContent = cellValue;
+function removeCells(board, difficultMode) {
+    let cellsToRemove;
+
+    switch (difficultMode) {
+        case 1:
+            cellsToRemove = 20; // Easy
+            break;
+        case 2:
+            cellsToRemove = 40; // Medium
+            break;
+        case 3:
+            cellsToRemove = 50; // Hard
+            break;
+        default:
+            cellsToRemove = 20; // Default: Easy
+    }
+
+    while (cellsToRemove > 0) {
+        const row = Math.floor(Math.random() * 9);
+        const col = Math.floor(Math.random() * 9);
+
+        if (board[row][col] !== 0) {
+            board[row][col] = 0;
+            cellsToRemove--;
         }
-        index++;
     }
 }
+
+function generateNewBoard(difficultMode) {
+    let board = Array.from({ length: 9 }, () => Array(9).fill(0)); 
+    createSudokuBoard(board); 
+    removeCells(board, difficultMode);
+    return board;
+}
+
+function displayBoard(board) {
+    const tableCells = document.querySelectorAll("#SudokuTable td");
+    let index = 0; 
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            const cellValue = board[row][col];
+            if (cellValue !== 0) {
+                tableCells[index].textContent = cellValue;
+            } else {
+                tableCells[index].textContent = "";
+            }
+            index++;
+        }
+    }
+}
+
+document.getElementById('EasyMode').addEventListener('click', function() {
+    const newBoard = generateNewBoard(1); 
+    displayBoard(newBoard); 
+});
+
+document.getElementById('MediumMode').addEventListener('click', function() {
+    const newBoard = generateNewBoard(2); 
+    displayBoard(newBoard); 
+});
+
+document.getElementById('HardMode').addEventListener('click', function() {
+    const newBoard = generateNewBoard(3); 
+    displayBoard(newBoard); 
+});
+
+window.onload = function() {
+    const newBoard = generateNewBoard(1); 
+    displayBoard(newBoard); 
+};
 
 function getCellPosition(cell) {
     const row = cell.parentNode.rowIndex + 1; 
@@ -100,8 +158,9 @@ function getCellPosition(cell) {
 }
 
 tableCells.forEach(cell => {
-    tableCells.addEventListener('click', () => {
+    cell.addEventListener('click', () => {
         const position = getCellPosition(cell); 
     });
 });
+
 startTimer();
