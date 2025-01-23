@@ -156,4 +156,10 @@ td {
     border: 1px solid #000;
     font-size: 20px;
     font-family: Arial, sans-serif;
+    cursor: pointer;
 }
+
+td.selected {
+    background-color: #c4c7cc; 
+}
+
