@@ -4,14 +4,14 @@ var numberOfError = 0;
 let SudokuBoard = Array.from({length : 9}, () => Array(9).fill(0));
 let SolutionBoard = Array.from({length : 9}, () => Array(9).fill(0));
 
-var element = document.getElementById('Timer');
+var element_timer = document.getElementById('Timer');
 var timer; 
 var sec = 0; 
 function startTimer() {
     timer = setInterval(() => {
         var minutes = Math.floor(sec / 60);
         var seconds = sec % 60;
-        element.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        element_timer.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         sec++;
     }, 1000);
 }
@@ -38,7 +38,7 @@ document.getElementById('NewGame').addEventListener('click', () => {
     displayBoard();
     clearInterval(timer); 
     sec = 0;
-    element.innerHTML = '00:00'; 
+    element_timer.innerHTML = '00:00'; 
     startTimer();
 });
 
@@ -119,16 +119,16 @@ function removeCells(difficultMode) {
 
     switch (difficultMode) {
         case 1:
-            cellsToRemove = 20; // Easy
+            cellsToRemove = 40; // Easy
             break;
         case 2:
-            cellsToRemove = 40; // Medium
+            cellsToRemove = 50; // Medium
             break;
         case 3:
-            cellsToRemove = 50; // Hard
+            cellsToRemove = 60; // Hard
             break;
         default:
-            cellsToRemove = 20; // Default: Easy
+            cellsToRemove = 40; // Default: Easy
     }
 
     while (cellsToRemove > 0) {
@@ -144,11 +144,11 @@ function removeCells(difficultMode) {
 
 function generateNewBoard() {
     createSolutionBoard(); 
-    SudokuBoard = SolutionBoard;
+    SudokuBoard = SolutionBoard.map(row => row.slice());// Tạo bản sao sâu của SolutionBoard
     removeCells(difficultMode);
     return SudokuBoard;
 }
-
+console.log(SolutionBoard);
 function displayBoard() {
     const tableCells = document.querySelectorAll("#SudokuTable td");
     let index = 0; 
@@ -171,29 +171,97 @@ function getCellPosition(cell) {
     return [row, col];                     
 }
 
+function highlightRow(row) {
+    const rows = document.querySelectorAll("#SudokuTable tr");
+    rows[row].classList.add("highlight-row");
+}
+
+function highlightColumn(col) {
+    const cells = document.querySelectorAll(`#SudokuTable td:nth-child(${col + 1})`);
+    cells.forEach(cell => {
+        cell.classList.add("highlight-column");
+    });
+}
+
+function removeHighlight() {
+    const highlightedRows = document.querySelectorAll(".highlight-row");
+    const highlightedColumns = document.querySelectorAll(".highlight-column");
+    const highlightedCell = document.querySelectorAll(".highlight-cell");
+
+    highlightedRows.forEach(row => row.classList.remove("highlight-row"));
+    highlightedColumns.forEach(cell => cell.classList.remove("highlight-column"));
+    highlightedCell.forEach(cell => cell.classList.remove("highlight-cell"));
+}
+
+function highlightSameNumber(value){
+    const allCells = document.querySelectorAll("#SudokuTable td");
+
+    allCells.forEach(cell => {
+        if (cell.innerText === value){
+            cell.classList.add("highlight-cell");
+        }
+    })
+
+}
+
+function highlightSubgrid(row, col) {
+    const startRow = Math.floor(row / 3) * 3; // Tính chỉ số hàng bắt đầu của ô 3x3
+    const startCol = Math.floor(col / 3) * 3; // Tính chỉ số cột bắt đầu của ô 3x3
+
+    for (let r = startRow; r < startRow + 3; r++) {
+        for (let c = startCol; c < startCol + 3; c++) {
+            const cell = document.querySelector(`#SudokuTable tr:nth-child(${r + 1}) td:nth-child(${c + 1})`);
+            cell.classList.add("highlight-cell");
+        }
+    }
+}
+
 const tableCells = document.querySelectorAll("#SudokuTable td");
 tableCells.forEach(cell => {
     cell.addEventListener('click', () => {
         position = getCellPosition(cell);
+        if (cell.innerText !== ""){
+            const row = position[0];
+            const col = position[1];
+            
+            removeHighlight();
+
+            highlightRow(row);
+
+            highlightColumn(col);
+            
+            highlightSameNumber(cell.innerText);
+
+            highlightSubgrid(row, col);
+        }else{
+            removeHighlight();
+            cell.classList.add("highlight-cell");
+        }
     });
 });
 
 document.getElementById('EasyMode').addEventListener('click', function() {
+    if (difficultMode !== 1){
     difficultMode = 1;
     generateNewBoard(); 
     displayBoard(); 
+    }
 });
 
 document.getElementById('MediumMode').addEventListener('click', function() {
+    if (difficultMode !== 2){
     difficultMode = 2;
     generateNewBoard(); 
     displayBoard(); 
+    }
 });
 
 document.getElementById('HardMode').addEventListener('click', function() {
+    if (difficultMode !== 3){
     difficultMode = 3;
     generateNewBoard(); 
     displayBoard(); 
+    }
 });
 
 window.onload = function() {
@@ -201,5 +269,4 @@ window.onload = function() {
     generateNewBoard(); 
     displayBoard(); 
 };
-
 startTimer();

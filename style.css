@@ -151,3 +151,14 @@ td.selected {
     background-color: #c4c7cc; 
 }
 
+.highlight-row {
+    background-color: #84878d; /* Màu nền của hàng */
+}
+
+.highlight-column {
+    background-color: #84878d; /* Màu nền của cột */
+}
+
+.highlight-cell {
+    background-color: #84878d;
+}
