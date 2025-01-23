@@ -93,4 +93,15 @@ for (let row = 0; row < 9; row++) {
     }
 }
 
+function getCellPosition(cell) {
+    const row = cell.parentNode.rowIndex + 1; 
+    const col = cell.cellIndex + 1;          
+    return { row, col };                     
+}
+
+tableCells.forEach(cell => {
+    tableCells.addEventListener('click', () => {
+        const position = getCellPosition(cell); 
+    });
+});
 startTimer();
