@@ -116,10 +116,9 @@
 }
 
 #NewGame:hover {
-    background-color: #6c93e9;
+    background-color: #2e54a8;
     cursor: pointer;
 }
-
 
 .thick-border-left {
     border-left: 3px solid #000;

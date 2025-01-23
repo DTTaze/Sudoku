@@ -1,12 +1,12 @@
+var position = [0, 0];
+var difficultMode = 1;
+var numberOfError = 0;
+let SudokuBoard = Array.from({length : 9}, () => Array(9).fill(0));
+let SolutionBoard = Array.from({length : 9}, () => Array(9).fill(0));
+
+var element = document.getElementById('Timer');
 var timer; 
 var sec = 0; 
-var isPaused = false; 
-var element = document.getElementById('Timer');
-var button = document.getElementById('PauseIcon');
-var icon = button.querySelector('i');
-var board = Array.from({length : 9}, () => Array(9).fill(0) )
-var difficultMode = 1;
-
 function startTimer() {
     timer = setInterval(() => {
         var minutes = Math.floor(sec / 60);
@@ -16,6 +16,9 @@ function startTimer() {
     }, 1000);
 }
 
+var button = document.getElementById('PauseIcon');
+var icon = button.querySelector('i');
+var isPaused = false; 
 function pause() {
     if (isPaused) {
         startTimer();
@@ -30,13 +33,44 @@ function pause() {
     }
 }
 
-function isSafe(board, row, col, num) {
+document.getElementById('NewGame').addEventListener('click', () => {
+    generateNewBoard();
+    displayBoard();
+    clearInterval(timer); 
+    sec = 0;
+    element.innerHTML = '00:00'; 
+    startTimer();
+});
+
+const numberDivs = document.getElementsByClassName('NumberValue');
+for (let div of numberDivs) {
+    div.addEventListener('click', () => {
+        var num = parseInt(div.innerHTML);
+        if(SudokuBoard[position[0]][position[1]] === 0) {
+            if(num === SolutionBoard[position[0]][position[1]]) {
+                SudokuBoard[position[0]][position[1]] = num;
+                displayBoard();
+            } else {
+                numberOfError++;
+                var ErrorNumber = document.getElementById('NumberError');
+                ErrorNumber.innerText = numberOfError + '/' + '3';
+                if(numberOfError > 3) {
+                    ErrorNumber.innerText = '0/3';
+                    generateNewBoard();
+                    displayBoard();
+                }
+            }
+        } 
+    });
+}
+
+function isSafe(row, col, num) {
     for (var i = 0; i < 9; i++) {
-        if (board[row][i] === num) return false;
+        if (SolutionBoard[row][i] === num) return false;
     }
 
     for (var i = 0; i < 9; i++) {
-        if (board[i][col] === num) return false;
+        if (SolutionBoard[i][col] === num) return false;
     }
 
     const startRow = Math.floor(row / 3) * 3;
@@ -44,7 +78,7 @@ function isSafe(board, row, col, num) {
 
     for (var i = 0; i < 3; i++) {
         for (var j = 0; j < 3; j++) {
-            if (board[startRow + i][startCol + j] === num) return false;
+            if (SolutionBoard[startRow + i][startCol + j] === num) return false;
         }
     }
 
@@ -59,18 +93,18 @@ function shuffle(array) {
     return array;
 }
 
-function createSudokuBoard(board) {
+function createSolutionBoard() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (board[i][j] === 0) {
+            if (SolutionBoard[i][j] === 0) {
                 const numbers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
                 for (let num of numbers) {
-                    if (isSafe(board, i, j, num)) {
-                        board[i][j] = num;
-                        if (createSudokuBoard(board)) {
+                    if (isSafe(i, j, num)) {
+                        SolutionBoard[i][j] = num;
+                        if (createSolutionBoard()) {
                             return true;
                         }
-                        board[i][j] = 0;
+                        SolutionBoard[i][j] = 0;
                     }
                 }
                 return false;
@@ -80,7 +114,7 @@ function createSudokuBoard(board) {
     return true;
 }
 
-function removeCells(board, difficultMode) {
+function removeCells(difficultMode) {
     let cellsToRemove;
 
     switch (difficultMode) {
@@ -101,26 +135,26 @@ function removeCells(board, difficultMode) {
         const row = Math.floor(Math.random() * 9);
         const col = Math.floor(Math.random() * 9);
 
-        if (board[row][col] !== 0) {
-            board[row][col] = 0;
+        if (SudokuBoard[row][col] !== 0) {
+            SudokuBoard[row][col] = 0;
             cellsToRemove--;
         }
     }
 }
 
-function generateNewBoard(difficultMode) {
-    let board = Array.from({ length: 9 }, () => Array(9).fill(0)); 
-    createSudokuBoard(board); 
-    removeCells(board, difficultMode);
-    return board;
+function generateNewBoard() {
+    createSolutionBoard(); 
+    SudokuBoard = SolutionBoard;
+    removeCells(difficultMode);
+    return SudokuBoard;
 }
 
-function displayBoard(board) {
+function displayBoard() {
     const tableCells = document.querySelectorAll("#SudokuTable td");
     let index = 0; 
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
-            const cellValue = board[row][col];
+            const cellValue = SudokuBoard[row][col];
             if (cellValue !== 0) {
                 tableCells[index].textContent = cellValue;
             } else {
@@ -131,36 +165,41 @@ function displayBoard(board) {
     }
 }
 
+function getCellPosition(cell) {
+    const row = cell.parentNode.rowIndex; 
+    const col = cell.cellIndex;         
+    return [row, col];                     
+}
+
+const tableCells = document.querySelectorAll("#SudokuTable td");
+tableCells.forEach(cell => {
+    cell.addEventListener('click', () => {
+        position = getCellPosition(cell);
+    });
+});
+
 document.getElementById('EasyMode').addEventListener('click', function() {
-    const newBoard = generateNewBoard(1); 
-    displayBoard(newBoard); 
+    difficultMode = 1;
+    generateNewBoard(); 
+    displayBoard(); 
 });
 
 document.getElementById('MediumMode').addEventListener('click', function() {
-    const newBoard = generateNewBoard(2); 
-    displayBoard(newBoard); 
+    difficultMode = 2;
+    generateNewBoard(); 
+    displayBoard(); 
 });
 
 document.getElementById('HardMode').addEventListener('click', function() {
-    const newBoard = generateNewBoard(3); 
-    displayBoard(newBoard); 
+    difficultMode = 3;
+    generateNewBoard(); 
+    displayBoard(); 
 });
 
 window.onload = function() {
-    const newBoard = generateNewBoard(1); 
-    displayBoard(newBoard); 
+    difficultMode = 1;
+    generateNewBoard(); 
+    displayBoard(); 
 };
-
-function getCellPosition(cell) {
-    const row = cell.parentNode.rowIndex + 1; 
-    const col = cell.cellIndex + 1;          
-    return { row, col };                     
-}
-
-tableCells.forEach(cell => {
-    cell.addEventListener('click', () => {
-        const position = getCellPosition(cell); 
-    });
-});
 
 startTimer();
