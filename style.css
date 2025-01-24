@@ -238,14 +238,10 @@ td.selected {
     background-color: #c4c7cc; 
 }
 
-.highlight-row {
-    background-color: #84878d; /* Màu nền của hàng */
-}
-
-.highlight-column {
-    background-color: #84878d; /* Màu nền của cột */
+.highlight-row, .highlight-column, .highlight-subgrid{
+    background-color: #bac6db;
 }
 
 .highlight-cell {
-    background-color: #84878d;
+    background-color: #7e8fafe0;
 }

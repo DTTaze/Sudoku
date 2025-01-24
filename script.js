@@ -5,6 +5,7 @@ let SudokuBoard = Array.from({length : 9}, () => Array(9).fill(0));
 let SolutionBoard = Array.from({length : 9}, () => Array(9).fill(0));
 var table = document.getElementById('SudokuTable');
 let undoStack = [];
+var isNote = false;
 
 document.getElementById('EasyMode').addEventListener('click', function() {
     if (difficultMode !== 1){
@@ -36,6 +37,18 @@ window.onload = function() {
     generateNewSudokuBoard(); 
     displayBoard();
 };
+
+document.getElementById('noteBtn').addEventListener('click', () => {
+    let noteBtn_image = document.getElementById('noteBtn');
+    if (isNote){
+        isNote = false;
+        noteBtn_image.style.color = '';
+    } else {
+        isNote = true;
+        noteBtn_image.style.color = '#a0afca';
+    }
+})
+
 
 var element_timer = document.getElementById('Timer');
 var timer; 
@@ -196,36 +209,54 @@ function highlightColumn(col) {
     });
 }
 
+
+function highlightSameNumber(value){
+    const allCells = document.querySelectorAll("#SudokuTable td");
+    
+    allCells.forEach(cell => {
+        if (cell.innerText == value){
+            cell.classList.add("highlight-cell");
+        }
+    })
+    
+}
+
+function highlightSubgrid(row, col) {
+    const startRow = Math.floor(row / 3) * 3; // Tính chỉ số hàng bắt đầu của ô 3x3
+    const startCol = Math.floor(col / 3) * 3; // Tính chỉ số cột bắt đầu của ô 3x3
+    
+    for (let r = startRow; r < startRow + 3; r++) {
+        for (let c = startCol; c < startCol + 3; c++) {
+            const cell = document.querySelector(`#SudokuTable tr:nth-child(${r + 1}) td:nth-child(${c + 1})`);
+            cell.classList.add("highlight-subgrid");
+        }
+    }
+}
+
 function removeHighlight() {
     const highlightedRows = document.querySelectorAll(".highlight-row");
     const highlightedColumns = document.querySelectorAll(".highlight-column");
     const highlightedCell = document.querySelectorAll(".highlight-cell");
+    const highlightedSubgrid = document.querySelectorAll(".highlight-subgrid");
 
     highlightedRows.forEach(row => row.classList.remove("highlight-row"));
     highlightedColumns.forEach(cell => cell.classList.remove("highlight-column"));
     highlightedCell.forEach(cell => cell.classList.remove("highlight-cell"));
+    highlightedSubgrid.forEach(cell => cell.classList.remove("highlight-subgrid"));
 }
 
-function highlightSameNumber(value){
-    const allCells = document.querySelectorAll("#SudokuTable td");
+function highlight(row,col,value){
 
-    allCells.forEach(cell => {
-        if (cell.innerText === value){
-            cell.classList.add("highlight-cell");
-        }
-    })
-}
+    removeHighlight();
 
-function highlightSubgrid(row, col) {
-    const startRow = Math.floor(row / 3) * 3; 
-    const startCol = Math.floor(col / 3) * 3; 
+    highlightRow(row);
 
-    for (let r = startRow; r < startRow + 3; r++) {
-        for (let c = startCol; c < startCol + 3; c++) {
-            const cell = document.querySelector(`#SudokuTable tr:nth-child(${r + 1}) td:nth-child(${c + 1})`);
-            cell.classList.add("highlight-cell");
-        }
-    }
+    highlightColumn(col);
+    
+    highlightSameNumber(value);
+
+    highlightSubgrid(row, col);
+
 }
 
 function getCellPosition(cell) {
@@ -239,21 +270,12 @@ tableCells.forEach(cell => {
     cell.addEventListener('click', () => {
         position = getCellPosition(cell);
         if (cell.innerText !== ""){
-            const row = position[0];
-            const col = position[1];
-
-            removeHighlight();
-
-            highlightRow(row);
-
-            highlightColumn(col);
-            
-            highlightSameNumber(cell.innerText);
-
-            highlightSubgrid(row, col);
-        } else {
+            highlight(position[0],position[1],cell.innerText)
+        }else{
             removeHighlight();
             cell.classList.add("highlight-cell");
+            highlightRow(position[0]);
+            highlightColumn(position[1]);
         }
     });
 });
@@ -272,7 +294,6 @@ function saveState() {
         }
         currentState.push(rowState);
     }
-    console.log(currentState);
     undoStack.push(currentState);
 }
 
@@ -339,14 +360,23 @@ const numberDivs = document.getElementsByClassName('NumberValue');
 for (let div of numberDivs) {
     div.addEventListener('click', () => {
         var num = parseInt(div.innerHTML);
-        if(SudokuBoard[position[0]][position[1]] === 0) {
-            saveState();
-            changeCellValue(num);
-            changeCellColorToBlack();
-            if(num !== SolutionBoard[position[0]][position[1]]) {
-                handleError();
+        if (isNote == false){    
+            if(SudokuBoard[position[0]][position[1]] === 0) {
+                saveState();
+                changeCellValue(num);
+                changeCellColorToBlack();
+                if(num !== SolutionBoard[position[0]][position[1]]) {
+                    handleError();
+                }else {
+                    highlight(position[0], position[1],num);
+                }
+            } 
+        }else {
+            let cell = getCellFromPosition("SudokuTable",position);
+            if (SudokuBoard[position[0]][position[1]] == 0){
+                insertAnddeleteNoteCell(cell,num);
             }
-        } 
+        }
     });
 }
 
@@ -367,3 +397,75 @@ document.getElementById('NewGame').addEventListener('click', () => {
     displayBoard();
     resetTimer();
 });
+function getCellFromPosition(tableId, position) {
+    const table = document.getElementById(tableId);
+    const row = position[0];
+    const col = position[1];
+    return table.rows[row].cells[col];
+}
+
+function hasNoteContainer(cell){
+    return cell.querySelector(".note-container") !== null;
+}
+
+function createNoteCell(cell){
+    if (hasNoteContainer(cell)){ return;}
+    const containNote = document.createElement("div");
+    containNote.className = "note-container";
+    containNote.style.display = "grid";
+    containNote.style.gridTemplateColumns = "repeat(3, 1fr)";
+    containNote.style.gridTemplateRows = "repeat(3, 1fr)";
+    containNote.style.width = "100%";
+    containNote.style.height = "100%";
+    containNote.style.position = "relative";
+
+    for (let i = 0; i < 9; i++) {
+        const noteCell = document.createElement("div");
+        noteCell.style.border = "none"; // Viền để thấy rõ lưới
+        noteCell.style.boxSizing = "border-box";
+        noteCell.style.fontSize = "10px"; // Kích thước chữ nhỏ cho ghi chú
+        noteCell.style.textAlign = "center";
+        noteCell.style.lineHeight = "1"; // Căn chỉnh chữ trong ô
+        noteCell.style.cursor = "pointer";
+        noteCell.setAttribute("contenteditable", "false"); // Cho phép chỉnh sửa
+
+        // Thêm ô vào lưới
+        containNote.appendChild(noteCell);
+    }
+
+    cell.style.position = "relative"; 
+    cell.innerHTML = ""; 
+    cell.appendChild(containNote);
+}
+
+function insertAnddeleteNoteCell(cell,num){
+    createNoteCell(cell);
+
+    const NoteContainer = cell.querySelector(".note-container");
+
+    const NoteCells = NoteContainer.querySelectorAll("div");
+
+    NoteCells.forEach((notecell,index) => {
+        if (index+1 == num){
+            if (notecell.textContent == ""){
+                notecell.textContent = num;
+                notecell.style.color = "#000099";
+            }else{
+                notecell.textContent = "";
+            }
+        }
+    })
+
+    checkAndRemoveNoteContainer(cell);
+}
+
+function checkAndRemoveNoteContainer(cell) {
+    const NoteCellcontainer = cell.querySelector(".note-container");
+    const NoteCells = NoteCellcontainer.querySelectorAll("div");
+
+    const Empty = Array.from(NoteCells).every(notecell => notecell.textContent == "");
+
+    if (Empty){
+        cell.removeChild(NoteCellcontainer);
+    }
+}
