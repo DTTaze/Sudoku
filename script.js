@@ -276,6 +276,7 @@ tableCells.forEach(cell => {
             cell.classList.add("highlight-cell");
             highlightRow(position[0]);
             highlightColumn(position[1]);
+            highlightSubgrid(position[0], position[1]);
         }
     });
 });

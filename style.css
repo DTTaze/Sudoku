@@ -235,13 +235,13 @@ td {
 }
 
 td.selected {
-    background-color: #c4c7cc; 
+    background-color: #ffffff; 
 }
 
 .highlight-row, .highlight-column, .highlight-subgrid{
-    background-color: #bac6db;
+    background-color: #e2ebf3;
 }
 
 .highlight-cell {
-    background-color: #7e8fafe0;
+    background-color: #bbdffa;
 }
