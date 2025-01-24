@@ -406,7 +406,7 @@ function createNoteCell(cell){
         noteCell.style.textAlign = "center";
         noteCell.style.lineHeight = "1"; // Căn chỉnh chữ trong ô
         noteCell.style.cursor = "pointer";
-        noteCell.setAttribute("contenteditable", "true"); // Cho phép chỉnh sửa
+        noteCell.setAttribute("contenteditable", "false"); // Cho phép chỉnh sửa
 
         // Thêm ô vào lưới
         containNote.appendChild(noteCell);
@@ -428,6 +428,7 @@ function insertAnddeleteNoteCell(cell,num){
         if (index+1 == num){
             if (notecell.textContent == ""){
                 notecell.textContent = num;
+                notecell.style.color = "#000099";
             }else{
                 notecell.textContent = "";
             }
