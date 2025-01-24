@@ -227,6 +227,70 @@ tableCells.forEach(cell => {
     });
 });
 
+function getPossibleValues(board, row, col) {
+    const values = new Set(["1", "2", "3", "4", "5", "6", "7", "8", "9"]);
+
+    const rowCells = board[row].querySelectorAll("td");
+    rowCells.forEach(cell => values.delete(cell.textContent.trim()));
+
+    for (let i = 0; i < 9; i++) {
+        const cell = board[i].querySelectorAll("td")[col];
+        values.delete(cell.textContent.trim());
+    }
+
+    const startRow = Math.floor(row / 3) * 3;
+    const startCol = Math.floor(col / 3) * 3;
+    for (let r = startRow; r < startRow + 3; r++) {
+        for (let c = startCol; c < startCol + 3; c++) {
+            const cell = board[r].querySelectorAll("td")[c];
+            values.delete(cell.textContent.trim());
+        }
+    }
+
+    return Array.from(values); 
+}
+
+function getHint() {
+    const board = document.querySelectorAll("#SudokuTable tr"); 
+    let hintFound = false; 
+
+    for (let row = 0; row < 9; row++) {
+        const cells = board[row].querySelectorAll("td"); 
+        for (let col = 0; col < 9; col++) {
+            const cell = cells[col];
+            if (!cell.textContent.trim()) { 
+                const possibleValues = getPossibleValues(board, row, col);
+                if (possibleValues.length === 1) {
+                    cell.classList.add("hint");
+
+                    const hintText = document.getElementById("hintText");
+                    const hintTitle = document.getElementById("hintTitle");
+                    hintTitle.textContent = `Gợi ý cho ô tại dòng ${row + 1}, cột ${col + 1}`;
+                    hintText.textContent = `Ô này có thể điền ${possibleValues[0]}`;
+                    document.getElementById("hintBox").style.display = "block";
+
+                    hintFound = true;
+                    return; 
+                }
+            }
+        }
+    }
+
+    if (!hintFound) {
+        document.getElementById("hintText").textContent = "Không còn gợi ý nào!";
+        document.getElementById("hintBox").style.display = "block";
+    }
+}
+
+document.getElementById('suggestBtn').addEventListener('click', () => {
+    document.getElementById('hintBox').classList.remove('hidden');
+    getHint(); 
+});
+
+document.getElementById('closeHint').addEventListener('click', function () {
+    document.getElementById('hintBox').classList.add('hidden');
+});
+
 document.getElementById('EasyMode').addEventListener('click', function() {
     if (difficultMode !== 1){
     difficultMode = 1;

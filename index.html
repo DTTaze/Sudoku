@@ -140,7 +140,15 @@
                         <i class="fa-solid fa-rotate-left undoBtn"></i>
                         <i class="fa-solid fa-eraser eraserBtn"></i>
                         <i class="fa-solid fa-pencil noteBtn"></i>
-                        <i class="fa-solid fa-lightbulb suggestBtn"></i>
+                        <i class="fa-solid fa-lightbulb" id="suggestBtn">
+                            <div id="hintBox" class="hidden">
+                                <h3 id="hintTitle">Gợi ý</h3>
+                                <p id="hintText"></p>
+                                <div class="hidden" style="margin-top: 15px; text-align: right;">
+                                    <div id="closeHint">Đóng</div>
+                                </div>
+                            </div>
+                        </i>
                     </div>
                     <div id="NumberTable">
                         <div class="NumberValue">1</div>

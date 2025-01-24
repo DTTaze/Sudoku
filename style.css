@@ -149,6 +149,39 @@ td {
     cursor: pointer;
 }
 
+#hintBox {
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    background: white; 
+    border-radius: 10px; 
+    width: 300px; 
+    padding: 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#hintTitle {
+    font-size: 18px; 
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+}
+
+#hintText {
+    margin: 0;
+    font-size: 14px; 
+    color: black;
+    font-family: Arial;
+}
+
+#hintBox.hidden{
+    display: none;
+}
+
+td.hint {
+    background-color: #cce5ff; 
+}
+
 td.selected {
     background-color: #c4c7cc; 
 }
