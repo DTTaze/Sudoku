@@ -3,6 +3,38 @@ var difficultMode = 1;
 var numberOfError = 0;
 let SudokuBoard = Array.from({length : 9}, () => Array(9).fill(0));
 let SolutionBoard = Array.from({length : 9}, () => Array(9).fill(0));
+var table = document.getElementById('SudokuTable');
+let undoStack = [];
+
+document.getElementById('EasyMode').addEventListener('click', function() {
+    if (difficultMode !== 1){
+    difficultMode = 1;
+    generateNewSudokuBoard(); 
+    displayBoard(); 
+    }
+});
+
+document.getElementById('MediumMode').addEventListener('click', function() {
+    if (difficultMode !== 2){
+    difficultMode = 2;
+    generateNewSudokuBoard(); 
+    displayBoard(); 
+    }
+});
+
+document.getElementById('HardMode').addEventListener('click', function() {
+    if (difficultMode !== 3){
+    difficultMode = 3;
+    generateNewSudokuBoard(); 
+    displayBoard(); 
+    }
+});
+
+window.onload = function() {
+    difficultMode = 1;
+    generateNewSudokuBoard(); 
+    displayBoard(); 
+};
 
 var element_timer = document.getElementById('Timer');
 var timer; 
@@ -33,41 +65,14 @@ function pause() {
     }
 }
 
-document.getElementById('NewGame').addEventListener('click', () => {
-    generateNewBoard();
-    displayBoard();
+function resetTimer() {
     clearInterval(timer); 
     sec = 0;
     element_timer.innerHTML = '00:00'; 
     startTimer();
-});
-
-const numberDivs = document.getElementsByClassName('NumberValue');
-for (let div of numberDivs) {
-    div.addEventListener('click', () => {
-        var num = parseInt(div.innerHTML);
-        if(SudokuBoard[position[0]][position[1]] === 0) {
-            if(num === SolutionBoard[position[0]][position[1]]) {
-                SudokuBoard[position[0]][position[1]] = num;
-                displayBoard();
-            } else {
-                numberOfError++;
-                var ErrorNumber = document.getElementById('NumberError');
-                ErrorNumber.innerText = numberOfError + '/' + '3';
-                if(numberOfError > 3) {
-                    ErrorNumber.innerText = '0/3';
-                    numberOfError = 0;
-                    generateNewBoard();
-                    displayBoard();
-                    clearInterval(timer); 
-                    sec = 0;
-                    element.innerHTML = '00:00'; 
-                    startTimer();
-                }
-            }
-        } 
-    });
 }
+
+startTimer();
 
 function isSafe(row, col, num) {
     for (var i = 0; i < 9; i++) {
@@ -147,10 +152,15 @@ function removeCells() {
     }
 }
 
-function generateNewBoard() {
+function generateNewSudokuBoard() {
     createSolutionBoard(); 
-    SudokuBoard = SolutionBoard.map(row => row.slice());// Tạo bản sao sâu của SolutionBoard
+    SudokuBoard = SolutionBoard.map(row => row.slice());
     removeCells(difficultMode);
+}
+
+function resetBoard() {
+    generateNewSudokuBoard();
+    displayBoard();
 }
 
 function displayBoard() {
@@ -159,6 +169,7 @@ function displayBoard() {
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
             const cellValue = SudokuBoard[row][col];
+            tableCells[index].style.color = 'black';
             if (cellValue !== 0) {
                 tableCells[index].textContent = cellValue;
             } else {
@@ -167,12 +178,6 @@ function displayBoard() {
             index++;
         }
     }
-}
-
-function getCellPosition(cell) {
-    const row = cell.parentNode.rowIndex; 
-    const col = cell.cellIndex;         
-    return [row, col];                     
 }
 
 function highlightRow(row) {
@@ -220,40 +225,124 @@ function highlightSubgrid(row, col) {
     }
 }
 
+function getCellPosition(cell) {
+    const row = cell.parentNode.rowIndex; 
+    const col = cell.cellIndex;         
+    return [row, col];                     
+}
+
 const tableCells = document.querySelectorAll("#SudokuTable td");
 tableCells.forEach(cell => {
     cell.addEventListener('click', () => {
         position = getCellPosition(cell);
+        if (cell.innerText !== ""){
+            const row = position[0];
+            const col = position[1];
+
+            removeHighlight();
+
+            highlightRow(row);
+
+            highlightColumn(col);
+            
+            highlightSameNumber(cell.innerText);
+
+            highlightSubgrid(row, col);
+        }else{
+            removeHighlight();
+            cell.classList.add("highlight-cell");
+        }
     });
 });
 
-document.getElementById('EasyMode').addEventListener('click', function() {
-    if (difficultMode !== 1){
-    difficultMode = 1;
-    generateNewBoard(); 
-    displayBoard(); 
+function saveState() {
+    const currentState = [];
+    for (let row = 0; row < 9; row++) {
+        const rowState = [];
+        for (let col = 0; col < 9; col++) {
+            const cell = table.rows[row].cells[col];
+            rowState.push(cell.textContent || "");
+        }
+        currentState.push(rowState);
+    }
+    console.log(currentState);
+    undoStack.push(currentState);
+}
+
+function undo() {
+    if (undoStack.length > 0) {
+        const previousState = undoStack.pop();
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                const cell = table.rows[row].cells[col];
+                cell.textContent = previousState[row][col];
+            }
+        }
+    } else {
+        alert("Không có gì để hoàn tác!");
+    }
+}
+
+document.getElementById('undoBtn').addEventListener('click', function() {
+    undo();
+});
+
+function eraseNum() {
+    changeCellValue("");
+}
+
+document.getElementById('eraserBtn').addEventListener('click', function() {
+    var cell = table.rows[position[0]].cells[position[1]];
+    if(SudokuBoard[position[0]][position[1]] === 0) {
+        eraseNum();
     }
 });
 
-document.getElementById('MediumMode').addEventListener('click', function() {
-    if (difficultMode !== 2){
-    difficultMode = 2;
-    generateNewBoard(); 
-    displayBoard(); 
-    }
-});
+function changeCellColorToRed() {
+    var cell = table.rows[position[0]].cells[position[1]];
+    cell.style.color = 'red';
+}
 
-document.getElementById('HardMode').addEventListener('click', function() {
-    if (difficultMode !== 3){
-    difficultMode = 3;
-    generateNewBoard(); 
-    displayBoard(); 
+function handleError() {
+    numberOfError++;
+    var ErrorNumber = document.getElementById('NumberError');
+    ErrorNumber.innerText = numberOfError + '/' + '3';
+    changeCellColorToRed();
+    if(numberOfError === 3) {
+        ErrorNumber.innerText = '0/3';
+        numberOfError = 0;
+        resetBoard();
+        resetTimer();
     }
-});
+}
 
-window.onload = function() {
-    difficultMode = 1;
-    generateNewBoard(); 
-    displayBoard(); 
-};
-startTimer();
+function changeCellValue(num) {
+    var cell = table.rows[position[0]].cells[position[1]];
+    cell.textContent = num;
+}
+
+function changeCellColorToBlack() {
+    var cell = table.rows[position[0]].cells[position[1]];
+    cell.style.color = 'black';
+}
+
+const numberDivs = document.getElementsByClassName('NumberValue');
+for (let div of numberDivs) {
+    div.addEventListener('click', () => {
+        var num = parseInt(div.innerHTML);
+        if(SudokuBoard[position[0]][position[1]] === 0) {
+            saveState();
+            changeCellValue(num);
+            changeCellColorToBlack();
+            if(num !== SolutionBoard[position[0]][position[1]]) {
+                handleError();
+            }
+        } 
+    });
+}
+
+document.getElementById('NewGame').addEventListener('click', () => {
+    generateNewSudokuBoard();
+    displayBoard();
+    resetTimer();
+});
