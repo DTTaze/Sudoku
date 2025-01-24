@@ -8,32 +8,33 @@ let undoStack = [];
 
 document.getElementById('EasyMode').addEventListener('click', function() {
     if (difficultMode !== 1){
-    difficultMode = 1;
-    generateNewSudokuBoard(); 
-    displayBoard(); 
+        difficultMode = 1;
+        generateNewSudokuBoard(); 
+        displayBoard(); 
     }
 });
 
 document.getElementById('MediumMode').addEventListener('click', function() {
     if (difficultMode !== 2){
-    difficultMode = 2;
-    generateNewSudokuBoard(); 
-    displayBoard(); 
+        difficultMode = 2;
+        generateNewSudokuBoard(); 
+        displayBoard(); 
     }
 });
 
 document.getElementById('HardMode').addEventListener('click', function() {
     if (difficultMode !== 3){
-    difficultMode = 3;
-    generateNewSudokuBoard(); 
-    displayBoard(); 
+        difficultMode = 3;
+        generateNewSudokuBoard(); 
+        displayBoard(); 
     }
 });
 
 window.onload = function() {
     difficultMode = 1;
+    startTimer();
     generateNewSudokuBoard(); 
-    displayBoard(); 
+    displayBoard();
 };
 
 var element_timer = document.getElementById('Timer');
@@ -51,19 +52,23 @@ function startTimer() {
 var button = document.getElementById('PauseIcon');
 var icon = button.querySelector('i');
 var isPaused = false; 
+
 function pause() {
-    if (isPaused) {
-        startTimer();
-        icon.classList.remove('fa-play');
-        icon.classList.add('fa-pause');
-        isPaused = false;
-    } else {
-        clearInterval(timer);
-        icon.classList.remove('fa-pause');
-        icon.classList.add('fa-play');
-        isPaused = true;
-    }
+    clearInterval(timer);
+    icon.classList.remove('fa-pause');
+    icon.classList.add('fa-play');
+    document.getElementById('game-stop-screen').classList.remove('hidden');
+    document.getElementById('message-resume-box').classList.remove('hidden');
+    isPaused = true;
 }
+
+document.getElementById('resume-btn').addEventListener('click', function() {
+    document.getElementById('game-stop-screen').classList.add('hidden');
+    document.getElementById('message-resume-box').classList.add('hidden');
+    startTimer();
+    icon.classList.remove('fa-play');
+    icon.classList.add('fa-pause');
+});
 
 function resetTimer() {
     clearInterval(timer); 
@@ -71,8 +76,6 @@ function resetTimer() {
     element_timer.innerHTML = '00:00'; 
     startTimer();
 }
-
-startTimer();
 
 function isSafe(row, col, num) {
     for (var i = 0; i < 9; i++) {
@@ -159,6 +162,7 @@ function generateNewSudokuBoard() {
 }
 
 function resetBoard() {
+    clearState();
     generateNewSudokuBoard();
     displayBoard();
 }
@@ -210,12 +214,11 @@ function highlightSameNumber(value){
             cell.classList.add("highlight-cell");
         }
     })
-
 }
 
 function highlightSubgrid(row, col) {
-    const startRow = Math.floor(row / 3) * 3; // Tính chỉ số hàng bắt đầu của ô 3x3
-    const startCol = Math.floor(col / 3) * 3; // Tính chỉ số cột bắt đầu của ô 3x3
+    const startRow = Math.floor(row / 3) * 3; 
+    const startCol = Math.floor(col / 3) * 3; 
 
     for (let r = startRow; r < startRow + 3; r++) {
         for (let c = startCol; c < startCol + 3; c++) {
@@ -248,12 +251,16 @@ tableCells.forEach(cell => {
             highlightSameNumber(cell.innerText);
 
             highlightSubgrid(row, col);
-        }else{
+        } else {
             removeHighlight();
             cell.classList.add("highlight-cell");
         }
     });
 });
+
+function clearState() {
+    undoStack = [];
+}
 
 function saveState() {
     const currentState = [];
@@ -309,6 +316,8 @@ function handleError() {
     ErrorNumber.innerText = numberOfError + '/' + '3';
     changeCellColorToRed();
     if(numberOfError === 3) {
+        document.getElementById('game-stop-screen').classList.remove('hidden');
+        document.getElementById('message-over-box').classList.remove('hidden');
         ErrorNumber.innerText = '0/3';
         numberOfError = 0;
         resetBoard();
@@ -341,8 +350,20 @@ for (let div of numberDivs) {
     });
 }
 
+document.getElementById('restart-btn').addEventListener('click', () => {
+    document.getElementById('game-stop-screen').classList.add('hidden');
+    document.getElementById('message-over-box').classList.add('hidden');
+    generateNewSudokuBoard();
+    displayBoard();
+    resetTimer();
+});
+
 document.getElementById('NewGame').addEventListener('click', () => {
     generateNewSudokuBoard();
+    var ErrorNumber = document.getElementById('NumberError');
+    numberOfError = 0;
+    ErrorNumber.innerText = '0/3';
+    numberOfError = 0;
     displayBoard();
     resetTimer();
 });
