@@ -56,8 +56,13 @@ for (let div of numberDivs) {
                 ErrorNumber.innerText = numberOfError + '/' + '3';
                 if(numberOfError > 3) {
                     ErrorNumber.innerText = '0/3';
+                    numberOfError = 0;
                     generateNewBoard();
                     displayBoard();
+                    clearInterval(timer); 
+                    sec = 0;
+                    element.innerHTML = '00:00'; 
+                    startTimer();
                 }
             }
         } 
@@ -114,7 +119,7 @@ function createSolutionBoard() {
     return true;
 }
 
-function removeCells(difficultMode) {
+function removeCells() {
     let cellsToRemove;
 
     switch (difficultMode) {
@@ -146,11 +151,10 @@ function generateNewBoard() {
     createSolutionBoard(); 
     SudokuBoard = SolutionBoard.map(row => row.slice());// Tạo bản sao sâu của SolutionBoard
     removeCells(difficultMode);
-    return SudokuBoard;
 }
-console.log(SolutionBoard);
+
 function displayBoard() {
-    const tableCells = document.querySelectorAll("#SudokuTable td");
+    let tableCells = document.querySelectorAll("#SudokuTable td");
     let index = 0; 
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
@@ -220,23 +224,6 @@ const tableCells = document.querySelectorAll("#SudokuTable td");
 tableCells.forEach(cell => {
     cell.addEventListener('click', () => {
         position = getCellPosition(cell);
-        if (cell.innerText !== ""){
-            const row = position[0];
-            const col = position[1];
-            
-            removeHighlight();
-
-            highlightRow(row);
-
-            highlightColumn(col);
-            
-            highlightSameNumber(cell.innerText);
-
-            highlightSubgrid(row, col);
-        }else{
-            removeHighlight();
-            cell.classList.add("highlight-cell");
-        }
     });
 });
 

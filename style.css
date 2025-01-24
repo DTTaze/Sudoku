@@ -29,6 +29,7 @@
     border-radius: 2px;
     cursor: pointer;
     background-color: rgb(171, 169, 169);
+    user-select: none;
 }
 
 
@@ -113,6 +114,7 @@
     font-size: larger;
     color:aliceblue;
     border-radius: 7px;
+    user-select: none;
 }
 
 #NewGame:hover {
