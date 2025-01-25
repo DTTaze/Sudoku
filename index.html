@@ -38,7 +38,7 @@
                 <div class="status-element" id="MediumMode"><p>Trung bình</p></div>
                 <div class="status-element" id="HardMode"><p>Khó</p></div>
                 <div class="status-element" id="Error"><p>Lỗi: </p></div>
-                <div class="status-element" id="NumberError"><p>0/3</p></div>
+                <div class="status-element" id="NumberError">0/3</div>
                 <div class="status-element" id="Timer">00:00</div>
                 <div class="status-element" id="PauseIcon" onclick="pause()"><i class="fa-solid fa-pause"></i></div>
             </div>
@@ -148,10 +148,22 @@
                 </div>
                 <div id="SudokuTool">
                     <div id="SudokuHelper">
-                        <i class="fa-solid fa-rotate-left" id="undoBtn"></i>
-                        <i class="fa-solid fa-eraser" id="eraserBtn"></i>
-                        <i class="fa-solid fa-pencil " id="noteBtn"></i>
-                        <i class="fa-solid fa-lightbulb suggestBtn"></i>
+                        <div class="game-control">
+                            <i class="fa-solid fa-rotate-left" id="undoBtn"></i>
+                            <p>Hoàn tác</p>
+                        </div>
+                        <div class="game-control">
+                            <i class="fa-solid fa-eraser" id="eraserBtn"></i>
+                            <p>Xóa</p>
+                        </div>
+                        <div class="game-control">
+                            <i class="fa-solid fa-pencil " id="noteBtn"></i>
+                            <p>Ghi chú</p>
+                        </div>
+                        <div class="game-control">
+                            <i class="fa-solid fa-lightbulb suggestBtn"></i>
+                            <p>Gợi ý</p>
+                        </div>
                     </div>
                     <div id="NumberTable">
                         <div class="NumberValue">1</div>

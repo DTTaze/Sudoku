@@ -4,6 +4,7 @@ var numberOfError = 0;
 let SudokuBoard = Array.from({length : 9}, () => Array(9).fill(0));
 let SolutionBoard = Array.from({length : 9}, () => Array(9).fill(0));
 var table = document.getElementById('SudokuTable');
+var ErrorNumber = document.getElementById('NumberError');
 let undoStack = [];
 var isNote = false;
 
@@ -186,7 +187,7 @@ function displayBoard() {
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
             const cellValue = SudokuBoard[row][col];
-            tableCells[index].style.color = 'black';
+            tableCells[index].style.color = '#344861';
             if (cellValue !== 0) {
                 tableCells[index].textContent = cellValue;
             } else {
@@ -334,7 +335,6 @@ function changeCellColorToRed() {
 
 function handleError() {
     numberOfError++;
-    var ErrorNumber = document.getElementById('NumberError');
     ErrorNumber.innerText = numberOfError + '/' + '3';
     changeCellColorToRed();
     if(numberOfError === 3) {

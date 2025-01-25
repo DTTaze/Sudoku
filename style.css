@@ -75,7 +75,7 @@
     width: 80%;
     margin: auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-bottom: 10px;
 }
 
@@ -84,13 +84,15 @@
 }
 
 .status-element {
+    color:#94a3b7;
     padding-left: 10px;
     padding-right: 10px;
 } 
 
 #NumberError {
-    margin: 0;
-    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #PauseIcon {
@@ -115,7 +117,6 @@
 }
 
 #Board {
-    border-collapse: collapse;
     display: flex;
     height: 450px;
     width: 450px;
@@ -125,102 +126,25 @@
     align-items: center;
 }
 
-#SudokuTool {
-    width: 400px;
-    height: 400px;
-    display: flex; 
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-#SudokuHelper .i {
-    text-align: 10px;
-}
-
-#SudokuHelper {
-    display: flex;
-
-}
-
-#SudokuHelper .fa-solid {
-    font-size: 30px;
-    padding: 10px;
-    border-radius: 30px;
-    background-color:#eaeef4 ;
-    margin-bottom: 10px;
-}
-
-#SudokuHelper .fa-solid:hover {
-    cursor: pointer;
-    background-color: #c4c7cc;
-}
-
-#NumberTable {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cột có chiều rộng bằng nhau */
-    grid-template-rows: repeat(3, 1fr); /* 4 hàng có chiều cao bằng nhau */
-    gap: 2px;
-    width: 200px;
-    height: 200px; 
-}
-
-.NumberValue {
-    background-color: #eaeef4;
-    padding: 20px; /* Tăng padding để các phím có kích thước lớn hơn */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 7px;
-    user-select: none;
-    font-size: 24px; /* Kích thước chữ lớn để dễ nhìn */
-    cursor: pointer; /* Thêm con trỏ chuột khi di chuyển qua phím */
-    transition: background-color 0.3s; /* Hiệu ứng khi hover */
-}
-
-.NumberValue:hover {
-    background-color: #cfd8e6; /* Thay đổi màu khi hover */
-}
-
-
-.NumberValue:hover {
-    background-color: #c4c7cc;
-    cursor: pointer;
-}
-
-#NewGame {
-    background-color: #5a7bc0;
-    width: 200px;
-    height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 100;
-    font-weight: bold;
-    font-size: larger;
-    color:aliceblue;
-    border-radius: 7px;
-    user-select: none;
-}
-
-#NewGame:hover {
-    background-color: #2e54a8;
-    cursor: pointer;
+#SudokuTable {
+    border-collapse: collapse;
+    color: #344861;
 }
 
 .thick-border-left {
-    border-left: 3px solid #000;
+    border-left: 2px solid #000;
 }
 
 .thick-border-right {
-    border-right: 3px solid #000;
+    border-right: 2px solid #000;
 }
 
 .thick-border-top {
-    border-top: 3px solid #000;
+    border-top: 2px solid #000;
 }
 
 .thick-border-bottom {
-    border-bottom: 3px solid #000;
+    border-bottom: 2px solid #000;
 }
 
 td {
@@ -228,8 +152,8 @@ td {
     height: 40px;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid #000;
-    font-size: 20px;
+    border: 1px solid #bfc2cc;
+    font-size: 25px;
     font-family: Arial, sans-serif;
     cursor: pointer;
 }
@@ -244,4 +168,102 @@ td.selected {
 
 .highlight-cell {
     background-color: #bbdffa;
+}
+
+#SudokuTool {
+    width: 300px;
+    height: 400px;
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#SudokuHelper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#SudokuHelper .i {
+    text-align: 10px;
+}
+
+#SudokuHelper .fa-solid {
+    font-size: 35px;
+    padding: 10px;
+    margin-right: 5px;
+    color: #325aaf;
+    border-radius: 30px;
+    background-color:#eaeef4 ;
+}
+
+#SudokuHelper .fa-solid:hover {
+    cursor: pointer;
+    background-color: #c4c7cc;
+}
+
+.game-control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-control p {
+    color: #325aaf;
+    margin-top: 2px;
+}
+
+#NumberTable {
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: repeat(3, 1fr); 
+    gap: 5px;
+    width: 300px;
+    height: 300px; 
+}
+
+.NumberValue {
+    background-color: #eaeef4;
+    color: #325aaf;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    user-select: none;
+    font-size: 30px;
+    cursor: pointer; 
+    transition: background-color 0.3s;
+}
+
+.NumberValue:hover {
+    background-color: #cfd8e6; 
+}
+
+
+.NumberValue:hover {
+    background-color: #c4c7cc;
+    cursor: pointer;
+}
+
+#NewGame {
+    background-color: #5a7bc0;
+    width: 300px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 100;
+    font-weight: bold;
+    font-size: larger;
+    color:aliceblue;
+    border-radius: 7px;
+    user-select: none;
+}
+
+#NewGame:hover {
+    background-color: #2e54a8;
+    cursor: pointer;
 }
