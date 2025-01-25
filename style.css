@@ -87,24 +87,33 @@
     color:#94a3b7;
     padding-left: 10px;
     padding-right: 10px;
+    font-weight: bold;
 } 
 
 #NumberError {
     display: flex;
     justify-content: center;
     align-items: center;
+    color:#000;
+    font-weight: bolder;
 }
 
 #PauseIcon {
     margin: 16px;
     cursor: pointer;
+    background-color: #eaeef4;
+    border-radius: 10px;
 }
 
 #EasyMode:hover, #MediumMode:hover, #HardMode:hover {
     border-radius: 2px;
     cursor: pointer;
-    background-color: rgb(171, 169, 169);
+    background-color: #eaeef4;
     user-select: none;
+}
+
+.active {
+    color:#325aaf;
 }
 
 
