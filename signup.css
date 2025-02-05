@@ -1,0 +1,84 @@
+#main {
+    width: 100vw;
+    height: 100vh;
+    background-color: #c8c9cf;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#Form__labelName, #Form_labelEmail, #Form_labelPassword {
+    font-weight:600;
+}
+
+#SignUpGoogle, #SignUpGithub {
+    margin-right: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-weight:600;
+}
+
+#fname, #femail, #fpassword {
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #c8c9cf;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#SubmitButton {
+    width: 100%;
+    margin-top: 20px;
+    padding: 7px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #4a91e2;
+    color:aliceblue;
+}
+
+#container {
+    width: 60%;
+    height: 80%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+}
+
+#SignUpForm__container {
+    width: 70%;
+    height: 85%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#SignUpForm {
+    width: 50%;
+}
+
+#thumbnail {
+    background-image: url(SudokuThumbnail.webp);
+    background-size: cover;
+    background-position: center;
+    width: 50%;
+}
+#div_3 {
+    margin: 10px;
+    margin-bottom: 20px;
+}
+
+#div_3 p {
+    display: inline;
+}
+

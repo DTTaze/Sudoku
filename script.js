@@ -8,6 +8,16 @@ var ErrorNumber = document.getElementById('NumberError');
 let undoStack = [];
 var isNote = false;
 
+function openSignUpPage() {
+    window.location.href = "signup.html";
+}
+
+// document.getElementById('SignUpButton').addEventListener('click', openSignUpPage());
+
+function openSignInPage() {
+
+}
+
 document.getElementById('EasyMode').addEventListener('click', function() {
     if (difficultMode !== 1){
         difficultMode = 1;

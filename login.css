@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background-color: #c8c9cf;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main {
+    width: 20%;
+    background-color: whitesmoke;
+    border-radius: 10px;
+}
+
+#container {
+    padding: 20px;
+    width: 90%;
+    margin: auto;
+}
+
+#Form__labelName, #Form_labelPassword {
+    font-size: large;
+    font-weight: 700;
+}
+
+#fname, #fpassword {
+    padding: 2px;
+    width: 90%;
+    border-radius: 10px;
+    border: 1px solid #c8c9cf;
+}
+
+#SubmitButton {
+    margin-top: 20px;
+    width: 90%;
+    padding: 5px;
+    border: none;
+    background-color: #4a91e2;
+    border-radius: 10px;
+}

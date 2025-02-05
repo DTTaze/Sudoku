@@ -2,6 +2,37 @@
     width: 80%;
     margin: auto;
 }
+
+a {
+    text-decoration: none;
+}
+
+#WebName {
+    width: 75%;
+    display: inline-block;
+}
+
+#SignIn-Button {
+    padding: 10px;
+    border: none;
+    background-color: white;
+    font-size: large;
+    font-weight: bold;
+}
+
+#SignUp-Button {
+    padding: 10px;
+    background-color: #5a7bc0;
+    color:aliceblue;
+    border-radius: 10px;
+    font-size: large;
+    font-weight: bold;
+    border:none;
+}
+
+#SignIn-Button:hover, #SignUp-Button:hover {
+    cursor: pointer;
+}
   
 #game-stop-screen {
     position: fixed; 
@@ -203,12 +234,13 @@ td.selected {
     margin-right: 5px;
     color: #325aaf;
     border-radius: 30px;
-    background-color:#eaeef4 ;
+    background-color:#eaeef4;
+    transition: filter 0.5s;
 }
 
 #SudokuHelper .fa-solid:hover {
     cursor: pointer;
-    background-color: #c4c7cc;
+    filter: brightness(90%);
 }
 
 .game-control {
@@ -270,9 +302,20 @@ td.selected {
     color:aliceblue;
     border-radius: 7px;
     user-select: none;
+    transition: opacity 0.8s;
 }
 
 #NewGame:hover {
-    background-color: #2e54a8;
+    opacity: 0.9;
     cursor: pointer;
+}
+
+/* CSS for small screen */
+@media only screen and (max-width: 600px) {
+    .Status {
+        display: flex;
+    }
+    .status-element {
+        font-size: 10px;
+    }
 }
