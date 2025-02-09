@@ -68,7 +68,7 @@
 }
 
 #thumbnail {
-    background-image: url(SudokuThumbnail.webp);
+    background-image: url(../assets/SudokuThumbnail.webp);
     background-size: cover;
     background-position: center;
     width: 50%;

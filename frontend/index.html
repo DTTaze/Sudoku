@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UV-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sudoku.com</title>
+        <link rel="stylesheet" href="styles/style.css">
+        <script src="script.js" defer></script>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <script src="https://kit.fontawesome.com/8f67e6cb9e.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="main">
+            <div id="header">
+                <div id="container">
+                    <div id="WebName">
+                        <h1>Sudoku.com</h1>
+                    </div>
+                    <a href="login.html" >
+                        <button id="SignIn-Button">Sign In</button>
+                    </a>
+                    <a href="signup.html" >
+                        <button id="SignUp-Button">Sign Up</button>
+                    </a>
+                </div>
+                <hr>
+                <br>
+            </div>
+            <div class="Status">
+                <div id="game-stop-screen" class="hidden">
+                    <div id="message-over-box" class="hidden">
+                      <h2>Trò chơi Kết thúc</h2>
+                      <p>Bạn đã mắc 3 lỗi và thua trò chơi này</p>
+                      <div id="restart-btn">Trò chơi Mới</div>
+                    </div>
+                    <div id="message-resume-box" class="hidden">
+                        <h2>Trò chơi Tạm dừng</h2>
+                        <div id="resume-btn">Quay lại</div>
+                    </div>
+                </div>
+                <div class="status-element" id="DifficultMode"><p>Độ khó:</p></div>
+                <div class="status-element box active" id="EasyMode"><p>Dễ</p></div>
+                <div class="status-element box" id="MediumMode"><p>Trung bình</p></div>
+                <div class="status-element box" id="HardMode"><p>Khó</p></div>
+                <div class="status-element" id="Error"><p>Lỗi: </p></div>
+                <div class="status-element" id="NumberError">0/3</div>
+                <div class="status-element" id="Timer">00:00</div>
+                <div class="status-element" id="PauseIcon" onclick="pause()"><i class="fa-solid fa-pause"></i></div>
+            </div>
+            <div id="SudokuGame">
+                <div id="Board">
+                    <table id="SudokuTable">
+                        <tr>
+                            <td class="thick-border-left thick-border-top"></td>
+                            <td class="thick-border-top"></td>
+                            <td class="thick-border-top thick-border-right"></td>
+                            <td class="thick-border-top"></td>
+                            <td class="thick-border-top"></td>
+                            <td class="thick-border-top thick-border-right"></td>
+                            <td class="thick-border-top"></td>
+                            <td class="thick-border-top"></td>
+                            <td class="thick-border-top thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left"></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left"></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left"></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left"></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left"></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="thick-border-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="thick-border-left thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom"></td>
+                            <td class="thick-border-bottom thick-border-right"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="SudokuTool">
+                    <div id="SudokuHelper">
+                        <div class="game-control">
+                            <i class="fa-solid fa-rotate-left" id="undoBtn"></i>
+                            <p>Hoàn tác</p>
+                        </div>
+                        <div class="game-control">
+                            <i class="fa-solid fa-eraser" id="eraserBtn"></i>
+                            <p>Xóa</p>
+                        </div>
+                        <div class="game-control">
+                            <i class="fa-solid fa-pencil " id="noteBtn"></i>
+                            <p>Ghi chú</p>
+                        </div>
+                        <div class="game-control">
+                            <i class="fa-solid fa-lightbulb suggestBtn"></i>
+                            <p>Gợi ý</p>
+                        </div>
+                    </div>
+                    <div id="NumberTable">
+                        <div class="NumberValue">1</div>
+                        <div class="NumberValue">2</div>
+                        <div class="NumberValue">3</div>
+                        <div class="NumberValue">4</div>
+                        <div class="NumberValue">5</div>
+                        <div class="NumberValue">6</div>
+                        <div class="NumberValue">7</div>
+                        <div class="NumberValue">8</div>
+                        <div class="NumberValue">9</div>
+                    </div>
+                    <div id="NewGame">Trò chơi mới</div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

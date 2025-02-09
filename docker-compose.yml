@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "80:80"  # Truy cập frontend qua http://localhost
+    depends_on:
+      - backend  # Chờ backend khởi động trước (không bắt buộc)
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - frontend  # (Tùy chọn) Đảm bảo backend khởi động sau frontend
