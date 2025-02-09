@@ -1,23 +1,23 @@
-# Sử dụng Python 3.10 làm base image
-FROM python:3.10
+# Sử dụng Python 3.13
+FROM python:3.13
 
-# Đặt thư mục làm việc
+# Thiết lập thư mục làm việc
 WORKDIR /app
 
 # Cài đặt Poetry
-RUN pip install poetry
+RUN pip install --upgrade pip && pip install poetry --upgrade
 
-# Copy file cấu hình Poetry trước để cache dependency
+# Sao chép tệp cấu hình Poetry từ thư mục gốc vào container
 COPY pyproject.toml poetry.lock ./
 
-# Cài đặt dependencies bằng Poetry
-RUN poetry config virtualenvs.create false && poetry install --no-root --no-dev
+# Cài đặt dependencies
+RUN poetry install --no-root
 
-# Copy toàn bộ mã nguồn backend vào container
-COPY backend/ .  
+# Sao chép mã nguồn vào container
+COPY . .
 
-# Mở cổng 8000 cho FastAPI
-EXPOSE 8000
+# Đảm bảo `uvicorn` được cài đặt
+RUN poetry run pip install uvicorn
 
-# Chạy ứng dụng FastAPI
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Chạy ứng dụng FastAPI với Uvicorn
+CMD ["poetry", "run", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]

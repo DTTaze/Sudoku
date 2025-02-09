@@ -12,5 +12,5 @@
 ├── .gitignore
 ├── docker-compose.yml
 ├── poetry.lock
-├── puproject.toml
+├── pyproject.toml
 └── README.md
