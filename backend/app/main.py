@@ -3,6 +3,7 @@ from backend.app.routers.auth.google_auth import router,init_oauth
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.responses import JSONResponse
 from .routers import User
 from pathlib import Path
 from dotenv import load_dotenv
@@ -42,3 +43,8 @@ async def home():
     return HTMLResponse(f"""
     <a href="{GOOGLE_DOMAIN}/auth/google">Login with Google</a>
     """)
+
+@app.get("/config")
+def get_config():
+    api_url = GOOGLE_DOMAIN
+    return JSONResponse(content={"API_URL": api_url})

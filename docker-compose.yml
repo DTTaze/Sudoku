@@ -9,6 +9,8 @@ services:
       - "80:80"  # Truy cập frontend qua http://localhost
     networks:
       - app_network
+    depends_on:
+      - backend  # Đảm bảo backend chạy trước
 
   backend:
     build:
