@@ -17,7 +17,7 @@ RUN poetry install --no-root
 COPY . .
 
 # Sao chép file .env để load biến môi trường
-COPY backend/.env .env
+COPY ../.env .env
 
 # Đảm bảo `uvicorn` được cài đặt
 RUN poetry run pip install uvicorn

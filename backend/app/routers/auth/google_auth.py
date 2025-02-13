@@ -1,9 +1,12 @@
 from authlib.integrations.starlette_client import OAuth
 from authlib.oauth2.rfc6749 import OAuth2Token
 from authlib.integrations.base_client import OAuthError
+from datetime import timedelta
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import HTMLResponse
-from backend.app.routers.auth.validators import GoogleUser
+from .validators import GoogleUser
+from ...db.database import db_dependency
+from ...Services.auth import get_or_create_user_by_google_sub, create_access_token,create_refresh_token
 from starlette import status
 from pathlib import Path
 from dotenv import load_dotenv
@@ -11,7 +14,7 @@ import os
 
 
 # Xác định thư mục backend
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ENV_PATH = BASE_DIR / ".env"
 
 load_dotenv(ENV_PATH, override=True)
@@ -46,7 +49,7 @@ async def login_google(request: Request):
     return await oauth.google.authorize_redirect(request, GOOGLE_REDIRECT_URI)
 
 @router.get("/callback")
-async def auth(request: Request):
+async def auth(request: Request, db =  db_dependency):
     try:
         user_response: OAuth2Token = await oauth.google.authorize_access_token(request)
     except OAuthError as e:
@@ -56,6 +59,19 @@ async def auth(request: Request):
 
     google_user = GoogleUser(**user_info)
 
+    user = get_or_create_user_by_google_sub(google_user, db)
+
+    access_token = create_access_token(user.username, user.id, timedelta(days=7))
+    refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
+
+    # Tạo response
+    response = RedirectResponse(FRONTEND_URL)
+    
+    # Lưu token vào cookie (HttpOnly giúp bảo mật hơn)
+    response.set_cookie(key="access_token", value=access_token, httponly=True, path="/")
+    response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, path="/")
+
+    return response
     if user_info:
         # get infor from user 
         user_info_display = f"""

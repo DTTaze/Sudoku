@@ -1,10 +1,17 @@
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+# Bỏ qua thư mục Docker build cache
+**/__pycache__/
+**/*.pyc
+**/.venv/
+**/venv/
+**/.env
+
+# Bỏ qua dữ liệu database
+db_data/
+*.sql
+*.db
+
+# Docker ignore
+docker-compose.override.yml
 .env
-.env.local
 
-poetry.lock
-
-**/Dockerfile
+db_data/
